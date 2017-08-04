@@ -32,6 +32,8 @@ function get_stylesheet_directory($filename)
   $dir = strtolower(basename(__DIR__));
   $uri = $_SERVER['REQUEST_URI'];
   $uri = explode('/',$uri);
+  print_r($uri);
+  echo $dir;
   $url = '';
   foreach ($uri as $value) {
     $value = strtolower($value);
