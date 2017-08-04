@@ -1,0 +1,120 @@
+body {
+  background-color: #ccc;
+}
+
+.bg-main {
+  background-color: #223344;
+}
+
+.white {
+  color: #fff;
+}
+
+.card {
+  margin-bottom: 30px;
+}
+
+.list-group .list-group-item {
+  height: 42px;
+}
+.list-group .fa {
+  width: 25px;
+}
+.list-group .badge {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+}
+
+.card-header {
+  height: 42px;
+  padding: 0.5rem 1.25rem;
+}
+
+.fa {
+  margin-right: 15px;
+}
+
+.footer {
+  padding: 15px 0;
+  height: 60px;
+  background-color: #ddd;
+}
+
+.navbar {
+  height: 50px;
+  padding: 0 100px 0 100px;
+  background-color: #223344;
+}
+.navbar .navbar-brand {
+  color: #ecf0f1;
+  padding-right: 40px;
+}
+.navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+  color: #ecdbff;
+}
+.navbar .navbar-text {
+  color: #ecf0f1;
+}
+.navbar .navbar-nav .nav-link {
+  color: #ecf0f1;
+  border-radius: 0.25rem;
+  margin: 0 0.25em;
+}
+.navbar .navbar-nav .nav-link:not(.disabled):hover, .navbar .navbar-nav .nav-link:not(.disabled):focus {
+  color: #ecdbff;
+}
+.navbar .navbar-nav .nav-item.active .nav-link, .navbar .navbar-nav .nav-item.active .nav-link:hover, .navbar .navbar-nav .nav-item.active .nav-link:focus, .navbar .navbar-nav .nav-item.show .nav-link, .navbar .navbar-nav .nav-item.show .nav-link:hover, .navbar .navbar-nav .nav-item.show .nav-link:focus {
+  color: #ecdbff;
+  background-color: #8e44ad;
+}
+.navbar .navbar-toggle {
+  border-color: #8e44ad;
+}
+.navbar .navbar-toggle:hover, .navbar .navbar-toggle:focus {
+  background-color: #8e44ad;
+}
+.navbar .navbar-toggle .navbar-toggler-icon {
+  color: #ecf0f1;
+}
+.navbar .navbar-collapse,
+.navbar .navbar-form {
+  border-color: #ecf0f1;
+}
+.navbar .navbar-link {
+  color: #ecf0f1;
+}
+.navbar .navbar-link:hover {
+  color: #ecdbff;
+}
+
+@media (max-width: 767px) {
+  .navbar .navbar-nav .open .dropdown-menu .dropdown-item {
+    color: #ecf0f1;
+  }
+  .navbar .navbar-nav .open .dropdown-menu .dropdown-item:hover, .navbar .navbar-nav .open .dropdown-menu .dropdown-item:focus {
+    color: #ecdbff;
+  }
+  .navbar .navbar-nav .open .dropdown-menu .dropdown-item.active {
+    color: #ecdbff;
+    background-color: #8e44ad;
+  }
+}
+header {
+  background-color: #429acc;
+  padding: 15px;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+#sign-in .card .card-header {
+  text-align: center;
+}
+#sign-in .card .card-body {
+  padding: 10px;
+}
+#sign-in .card .btn {
+  margin-left: 12.5%;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
