@@ -256,8 +256,8 @@ function get_result($value)
 function get_num_users()
 {
   $sql = "SELECT * FROM users";
-  if ($result = conn()->query($sql)) {
-    return $result->num_rows;
+  if (Data::select($sql)) {
+    return Data::$num_rows;
   } else {
     return 0;
   }
@@ -266,8 +266,8 @@ function get_num_users()
 function get_num_pages()
 {
   $sql = "SELECT * FROM pages";
-  if ($result = conn()->query($sql)) {
-    return $result->num_rows;
+  if (Data::select($sql)) {
+    return Data::$num_rows;
   } else {
     return 0;
   }
@@ -276,8 +276,8 @@ function get_num_pages()
 function get_num_posts()
 {
   $sql = "SELECT * FROM posts";
-  if ($result = conn()->query($sql)) {
-    return $result->num_rows;
+  if (Data::select($sql)) {
+    return Data::$num_rows;
   } else {
     return 0;
   }
