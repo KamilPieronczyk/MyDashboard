@@ -1,18 +1,14 @@
 <?php
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$database = 'dashboard';
+define('HOST','localhost');
+define('USER', 'root');
+define('PASSWORD','');
+define('DATABASE', 'dashboard');
 
-$conn = new mysqli($host,$user,$password,$database);
+$conn = new mysqli(HOST,USER,PASSWORD,DATABASE);
+
 function conn()
 {
-  $host = 'localhost';
-  $user = 'root';
-  $password = '';
-  $database = 'dashboard';
-
-  return $conn = new mysqli($host,$user,$password,$database);
+  return $conn = new mysqli(HOST,USER,PASSWORD,DATABASE);
 }
 
 if ($conn->connect_error) {
