@@ -1,8 +1,4 @@
 <?php
-define('HOST','localhost');
-define('USER', 'root');
-define('PASSWORD','');
-define('DATABASE', 'dashboard');
 
 $conn = new mysqli(HOST,USER,PASSWORD,DATABASE);
 

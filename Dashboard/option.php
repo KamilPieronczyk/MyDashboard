@@ -1,5 +1,5 @@
 <?php
-require_once 'main-functions.php';
+require_once '../main-functions.php';
 
 if (!isset($_GET['form'])) {
   exit();

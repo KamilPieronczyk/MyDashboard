@@ -1,4 +1,4 @@
-<?php require 'main-functions.php'; ?>
+<?php require '../main-functions.php'; ?>
 <?php get_header() ?>
 <?php get_template_part_replace('templates/dashboard','top',array(
   'main' => 'Dashboard',

@@ -1,4 +1,4 @@
-<?php require_once 'main-functions.php'; ?>
+<?php require_once '../main-functions.php'; ?>
 <?php get_header(); ?>
 <?php get_template_part_replace_php('templates/dashboard','top',array(
   'main' => 'Sign in',

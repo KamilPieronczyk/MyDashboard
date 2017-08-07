@@ -2,15 +2,16 @@
 /*
 * Include files
 */
-require_once 'configuraction-files/mysql-connect.php';
-require_once 'actions.php';
-// variabel to connect with mysql = $conn
+require_once 'config.php';
+require_once DASHBOARD_PATH.'/configuraction-files/mysql-connect.php';
+require_once DASHBOARD_PATH.'/actions.php';
+// variabel to connect with mysql = conn()
 session_start();
 spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.class.php';
+    include DASHBOARD_PATH.'/classes/' . $class . '.class.php';
 });
-require_once 'configuraction-files/user-function.php';
-@include 'functions.php';
+require_once DASHBOARD_PATH.'/configuraction-files/user-function.php';
+@include DASHBOARD_PATH.'/functions.php';
 
 
 /*
@@ -19,28 +20,26 @@ require_once 'configuraction-files/user-function.php';
 
 function get_header()
 {
-  (@include 'header.php') or die('Cannot find a header file');
+  (@include DASHBOARD_PATH.'/header.php') or die('Cannot find a header file');
 }
 
 function get_footer()
 {
-  (@include 'footer.php') or die('Cannot find a footer file');
+  (@include DASHBOARD_PATH.'/footer.php') or die('Cannot find a footer file');
 }
 
-function get_stylesheet_directory($filename)
+function get_stylesheet_directory($filename, $maindir = DASHBOARD_PATH)
 {
   $dir = strtolower(basename(__DIR__));
   $uri = $_SERVER['REQUEST_URI'];
   $uri = explode('/',$uri);
-  print_r($uri);
-  echo $dir;
   $url = '';
   foreach ($uri as $value) {
     $value = strtolower($value);
     if ($value != $dir) {
       $url .= $value.'/';
     } else {
-      $url .= $value.'/css/'.$filename;
+      $url .= $value.'/'.$maindir.'/css/'.$filename;
       break;
     }
   }
@@ -75,31 +74,49 @@ function get_directory()
   $uri = $_SERVER['REQUEST_URI'];
   $uri = explode('/',$uri);
   $url = '';
-  foreach ($uri as $part) {
-    $value = strtolower($part);
+  foreach ($uri as $value) {
+    $value = strtolower($value);
     if ($value != $dir) {
-      $url .= ($value != '') ? '/'.$value : '';
+      $url .= $value.'/';
     } else {
-      $url .= '/'.$value;
+      $url .= $value.'/'.DASHBOARD_PATH;
       break;
     }
   }
   return $url;
 }
 
-function get_template_part($first,$second = '')
+function get_theme_directory()
+{
+  $dir = strtolower(basename(__DIR__));
+  $uri = $_SERVER['REQUEST_URI'];
+  $uri = explode('/',$uri);
+  $url = '';
+  foreach ($uri as $value) {
+    $value = strtolower($value);
+    if ($value != $dir) {
+      $url .= $value.'/';
+    } else {
+      $url .= $value.'/'.WEB_PATH;
+      break;
+    }
+  }
+  return $url;
+}
+
+function get_template_part($first,$second = '',$maindir = DASHBOARD_PATH)
 {
   if ($second != '') {
-    (@include $first.'-'.$second.'.php') or die ('Cannot open a '. $first.'-'.$second.'.php');
+    (@include $maindir.'/'.$first.'-'.$second.'.php') or die ('Cannot open a '. $first.'-'.$second.'.php');
   } else {
-    (@include $first.'.php') or die('Cannot open a'. $first.'.php');
+    (@include $maindir.'/'.$first.'.php') or die('Cannot open a'. $first.'.php');
   }
 }
 
-function get_template_part_replace($first,$second = '',$replace = array())
+function get_template_part_replace($first,$second = '',$replace = array(), $maindir = DASHBOARD_PATH)
 {
   if ($second != '') {
-  if (($file = file_get_contents($first.'-'.$second.'.php', FILE_USE_INCLUDE_PATH)) === FALSE)
+  if (($file = file_get_contents($maindir.'/'.$first.'-'.$second.'.php', FILE_USE_INCLUDE_PATH)) === FALSE)
   {
     die('Cannot open a '. $first.'-'.$second.'.php');
     return 0;
@@ -109,7 +126,7 @@ function get_template_part_replace($first,$second = '',$replace = array())
     }
     echo $file;
   } else {
-    if(($file = file_get_contents($first.'.php', FILE_USE_INCLUDE_PATH)) === FALSE)
+    if(($file = file_get_contents($maindir.'/'.$first.'.php', FILE_USE_INCLUDE_PATH)) === FALSE)
     {
       die('Cannot open a '. $first.'.php');
       return 0;
@@ -122,18 +139,18 @@ function get_template_part_replace($first,$second = '',$replace = array())
   return 1;
 }
 
-function get_template_part_replace_php($first,$second = '',$replace = array())
+function get_template_part_replace_php($first,$second = '',$replace = array(),$maindir = DASHBOARD_PATH)
 {
   if ($second != '') {
     ob_start();
-    (@include $first.'-'.$second.'.php') or die ('Cannot open a '. $first.'-'.$second.'.php');
+    (@include $maindir.'/'.$first.'-'.$second.'.php') or die ('Cannot open a '. $first.'-'.$second.'.php');
     $file = ob_get_clean();
     foreach ($replace as $key => $value) {
       $file = str_replace('['.$key.']',$value,$file);
     }
     echo $file;
   } else {
-    (@include $first.'.php') or die('Cannot open a'. $first.'.php');
+    (@include $maindir.'/'.$first.'.php') or die('Cannot open a'. $first.'.php');
     $file = ob_get_clean();
     foreach ($replace as $key => $value) {
       $file = str_replace('['.$key.']',$value,$file);
