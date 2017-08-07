@@ -11,6 +11,7 @@ spl_autoload_register(function ($class) {
     include DASHBOARD_PATH.'/classes/' . $class . '.class.php';
 });
 require_once DASHBOARD_PATH.'/configuraction-files/user-function.php';
+require_once DASHBOARD_PATH.'/configuraction-files/pages-functions.php';
 @include DASHBOARD_PATH.'/functions.php';
 
 
@@ -98,6 +99,24 @@ function get_theme_directory()
       $url .= $value.'/';
     } else {
       $url .= $value.'/'.WEB_PATH;
+      break;
+    }
+  }
+  return $url;
+}
+
+function get_main_directory()
+{
+  $dir = strtolower(basename(__DIR__));
+  $uri = $_SERVER['REQUEST_URI'];
+  $uri = explode('/',$uri);
+  $url = '';
+  foreach ($uri as $value) {
+    $value = strtolower($value);
+    if ($value != $dir) {
+      $url .= $value.'/';
+    } else {
+      $url .= $value;
       break;
     }
   }
@@ -307,9 +326,8 @@ function is_active($file)
   $active = pathinfo($_SERVER['REQUEST_URI']);
   $active = $active['filename'];
   $uri = get_directory();
-  $uri = str_replace('/','',$uri);
-  if ($active == $uri) {
-    $active = 'index';
+  if ($active == DASHBOARD_PATH) {
+    $active =  'index.php';
   }
   if (strpos($active,$file) !== false) {
     echo 'active';
@@ -347,4 +365,31 @@ function fa_icon($fa, $class = '', $id = '')
 {
   $id = ($id == '') ? '' : 'id="'. $id .'"';
   echo '<i class="fa '. $fa .' '. $class .'" '. $id .' aria-hidden="true"></i>';
+}
+
+function error404($message = '',$value = '')
+{
+  if ($message != '') {
+    $_SESSION['error404_message'] = $message;
+  }
+  switch ($value) {
+    case 'dashboard':
+      header_location(get_main_directory().'/error404.php');
+      break;
+
+    default:
+      header_location(get_main_directory().'/error404.php');
+      break;
+  }
+}
+
+function get_error404_message()
+{
+  if (isset($_SESSION['error404_message'])) {
+    $message = $_SESSION['error404_message'];
+    unset($_SESSION['error404_message']);
+  }else {
+    $message = '';
+  }
+  return $message;
 }

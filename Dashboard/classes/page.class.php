@@ -50,6 +50,7 @@ class Page
     } else {
       $file = '';
     }
+
     $sql = "INSERT INTO pages (id, title, content, published, thumbnail, special, file) VALUES (NULL, '$title', '$content', '$published', '{$thumbnail}', '$special', '$file')";
     if (conn()->query($sql) === TRUE) {
       set_alert(array(
@@ -57,6 +58,11 @@ class Page
         'title' => 'Success',
         'content' => "Page has been created successfull"
       ));
+      $pagefile = fopen('../'.WEB_PATH.'/'.$file, "w+");
+      $theme = fopen('page-theme.php','r');
+      fwrite($pagefile,fread($theme,filesize('page-theme.php')));
+      fclose($pagefile);
+      fclose($theme);
       $this->page_id = conn()->insert_id;
       $this->title = $title;
       $this->content = $content;
@@ -183,19 +189,10 @@ class Page
     }
   }
 
-  public function get_thumbnail($value = '')
+  public function get_thumbnail()
   {
     if (isset($this->thumbnail) && $this->thumbnail != '') {
-      switch ($value) {
-        case 'src':
-          $thumbnail = 'data:image/png;base64,'.base64_encode($this->thumbnail);
-          break;
-
-        default:
-          $thumbnail = base64_encode($this->thumbnail);
-          break;
-      }
-      return $thumbnail;
+      return $thumbnail = 'data:image/png;base64,'.base64_encode($this->thumbnail);
     } else {
       return NULL;
     }
@@ -260,6 +257,9 @@ class Page
   {
     if ($id == '') {
       $id = $this->page_id;
+    }
+    if ($this->special) {
+      unlink('../'.WEB_PATH.'/'.$this->file);
     }
     $sql = "DELETE FROM pages WHERE id = '$id'";
     if (conn()->query($sql) === TRUE) {
