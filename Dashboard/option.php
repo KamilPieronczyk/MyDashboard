@@ -354,3 +354,43 @@ if ($frname == 'menu_item_add') {
   header_location(get_directory().'/pages/menu.php');
   exit;
 }
+
+if ($frname == "menu_item_edit" ) {
+  if (!isset($_POST['url'])) {
+    $url = $_POST['page'];
+    if ($_POST['title'] == '') {
+      $page= new Page;
+      $page->get_page($_POST['page']);
+      $title = $page->get_title();
+    } else {
+      $title = $_POST['title'];
+    }
+  } else {
+    if ($_POST['title'] == '') {
+      set_alert(array(
+        'type' => 'danger',
+        'title' => 'Ee',
+        'content' => "Title mustn't be empty"
+      ));
+      header_location(get_directory().'/pages/menu.php');
+      exit;
+    } else {
+      $title = $_POST['title'];
+    }
+    $url = $_POST['url'];
+  }
+  if ($_POST['parent'] == 'NULL') {
+    $parent = '';
+  } else {
+    $parent = $_POST['parent'];
+  }
+  Menu::edit($_POST['item_id'], $_POST['title'], $url, $parent, $_POST['visibility'], $_POST['number']);
+  header_location(get_directory().'/pages/menu.php');
+  exit;
+}
+
+if ($frname == "menu_item_delete" ) {
+  Menu::delete($_GET['item_id']);
+  header_location(get_directory().'/pages/menu.php');
+  exit;
+}

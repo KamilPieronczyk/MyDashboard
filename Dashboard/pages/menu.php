@@ -60,19 +60,19 @@
                           </div>
                           <div class="input-group mr-sm-2 mb-2">
                             <label class="custom-control custom-radio">
-                              <input name="visible" type="radio" value="1" class="custom-control-input" <?php if (get_result('visibility')) echo 'checked'?>>
+                              <input name="visibility" type="radio" value="1" class="custom-control-input" <?php if (get_result('visibility')) echo 'checked'?>>
                               <span class="custom-control-indicator"></span>
                               <span class="custom-control-description">Visible</span>
                             </label>
                             <label class="custom-control custom-radio">
-                              <input name="visible" type="radio" value="0" class="custom-control-input" <?php if (!get_result('visibility')) echo 'checked'?>>
+                              <input name="visibility" type="radio" value="0" class="custom-control-input" <?php if (!get_result('visibility')) echo 'checked'?>>
                               <span class="custom-control-indicator"></span>
                               <span class="custom-control-description">Hidden</span>
                             </label>
                           </div>
                           <?php if (get_result('type') == 'page'): ?>
                             <label class="mr-sm-2" for="edit_page">Page</label>
-                              <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_page">
+                              <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_page" name="page">
                                 <option selected value="<?php get_result_e('url') ?>"><?php get_result_e('title') ?></option>
                                 <?php $page = new Query("SELECT * FROM pages WHERE id != '". get_result('url') ."' ORDER BY title") ?>
                                 <?php while($page->query_loop()) : ?>
@@ -88,9 +88,9 @@
                           <?php endif; ?>
                           <div class="input-group">
                             <label class="mr-sm-2" for="edit_parent">Parent</label>
-                              <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_parent">
+                              <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_parent" name="parent">
                                 <option selected value="">Choose parent</option>
-                                <?php $parent = new Query("SELECT * FROM menu WHERE parent_id IS NULL ORDER BY title") ?>
+                                <?php $parent = new Query("SELECT * FROM menu WHERE parent_id IS NULL AND id != '". get_result('id') ."' ORDER BY title") ?>
                                 <?php while($parent->query_loop()) : ?>
                                   <option value="<?php $parent->get_result_e('id') ?>"><?php $parent->get_result_e('title') ?></option>
                                 <?php endwhile ?>
@@ -105,48 +105,48 @@
                   </div>
                 </div>
               </div>
-                <?php $query = new Query("SELECT * FROM menu WHERE parent_id = '".get_result('id')."' ORDER BY number") ?>
-                <?php while($query->query_loop()) : ?>
+                <?php $child = new Query("SELECT * FROM menu WHERE parent_id = '".get_result('id')."' ORDER BY number") ?>
+                <?php while($child->query_loop()) : ?>
                 <div class="row">
                   <div class="col-md-9 offset-md-2">
                     <div class="card mb-1">
-                      <div class="card-header" role="tab" id="heading<?php $query->get_result_e('id') ?>" data-toggle="collapse" data-parent="#accordion" href="#item<?php $query->get_result_e('id') ?>" aria-expanded="false" aria-controls="item<?php $query->get_result_e('id') ?>">
+                      <div class="card-header" role="tab" id="heading<?php $child->get_result_e('id') ?>" data-toggle="collapse" data-parent="#accordion" href="#item<?php $child->get_result_e('id') ?>" aria-expanded="false" aria-controls="item<?php $child->get_result_e('id') ?>">
                         <h5 class="mb-0">
-                          <a data-toggle="collapse" id="item-id<?php $query->get_result_e('id') ?>" class="" data-parent="#accordion" href="#item<?php $query->get_result_e('id') ?>" aria-expanded="false" aria-controls="item<?php $query->get_result_e('id') ?>">
-                            <?php fa_icon('fa-level-up') ?><?php $query->get_result_e('title') ?>
+                          <a data-toggle="collapse" id="item-id<?php $child->get_result_e('id') ?>" class="" data-parent="#accordion" href="#item<?php $child->get_result_e('id') ?>" aria-expanded="false" aria-controls="item<?php $child->get_result_e('id') ?>">
+                            <?php fa_icon('fa-level-up') ?><?php $child->get_result_e('title') ?>
                           </a>
                         </h5>
                       </div>
-                      <div id="item<?php $query->get_result_e('id') ?>" class="collapse" role="tabpanel" aria-labelledby="heading<?php $query->get_result_e('id') ?>">
+                      <div id="item<?php $child->get_result_e('id') ?>" class="collapse" role="tabpanel" aria-labelledby="heading<?php $child->get_result_e('id') ?>">
                         <div class="card-block">
                           <form action="<?php echo get_directory()?>/option.php?form=menu_item_edit" method="post" class="form-inline">
                             <label for="edit_title" class="sr-only">Title</label>
                             <div class="input-group mr-sm-2 mb-2">
                               <div class="input-group-addon">Title</div>
-                              <input type="text" name="title" value="<?php $query->get_result_e('title') ?>" id="edit_title" class="form-control">
+                              <input type="text" name="title" value="<?php $child->get_result_e('title') ?>" id="edit_title" class="form-control">
                             </div>
                             <label for="edit_number" class="sr-only">Number</label>
                             <div class="input-group mr-sm-2 col-md-4 mb-2">
                               <div class="input-group-addon">Number</div>
-                              <input type="number" name="number" value="<?php $query->get_result_e('number') ?>" id="edit_number" class="form-control">
+                              <input type="number" name="number" value="<?php $child->get_result_e('number') ?>" id="edit_number" class="form-control">
                             </div>
                             <div class="input-group mr-sm-2 mb-2">
                               <label class="custom-control custom-radio">
-                                <input name="visible" type="radio" value="1" class="custom-control-input" <?php if ($query->get_result('visibility')) echo 'checked'?>>
+                                <input name="visibility" type="radio" value="1" class="custom-control-input" <?php if ($child->get_result('visibility')) echo 'checked'?>>
                                 <span class="custom-control-indicator"></span>
                                 <span class="custom-control-description">Visible</span>
                               </label>
                               <label class="custom-control custom-radio">
-                                <input name="visible" type="radio" value="0" class="custom-control-input" <?php if (!$query->get_result('visibility')) echo 'checked'?>>
+                                <input name="visibility" type="radio" value="0" class="custom-control-input" <?php if (!$child->get_result('visibility')) echo 'checked'?>>
                                 <span class="custom-control-indicator"></span>
                                 <span class="custom-control-description">Hidden</span>
                               </label>
                             </div>
-                            <?php if ($query->get_result('type') == 'page'): ?>
+                            <?php if ($child->get_result('type') == 'page'): ?>
                               <label class="mr-sm-2" for="edit_page">Page</label>
-                                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_page">
-                                  <option selected value="<?php get_result_e('url') ?>"><?php $query->get_result_e('title') ?></option>
-                                  <?php $page = new Query("SELECT * FROM pages WHERE id != '". $query->get_result('url') ."' ORDER BY title") ?>
+                                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_page" name="page">
+                                  <option selected value="<?php get_result_e('url') ?>"><?php $child->get_result_e('title') ?></option>
+                                  <?php $page = new Query("SELECT * FROM pages WHERE id != '". $child->get_result('url') ."' ORDER BY title") ?>
                                   <?php while($page->query_loop()) : ?>
                                     <option value="<?php $page->get_result_e('id') ?>"><?php $page->get_result_e('title') ?></option>
                                   <?php endwhile ?>
@@ -155,20 +155,22 @@
                               <label for="edit_url" class="sr-only">Url</label>
                               <div class="input-group mr-sm-2 mb-2">
                                 <div class="input-group-addon">Url</div>
-                                <input type="url" name="url" value="<?php $query->get_result_e('url') ?>" id="edit_url" class="form-control">
+                                <input type="url" name="url" value="<?php $child->get_result_e('url') ?>" id="edit_url" class="form-control">
                               </div>
                             <?php endif; ?>
                             <div class="input-group">
                               <label class="mr-sm-2" for="edit_parent">Parent</label>
-                                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_parent">
+                                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="edit_parent" name="parent">
                                   <option selected value="<?php get_result_e('id') ?>"><?php get_result_e('title') ?></option>
                                   <?php $parent = new Query("SELECT * FROM menu WHERE parent_id IS NULL AND id != '". get_result('id') ."' ORDER BY title") ?>
                                   <?php while($parent->query_loop()) : ?>
                                     <option value="<?php $parent->get_result_e('id') ?>"><?php $parent->get_result_e('title') ?></option>
                                   <?php endwhile ?>
+                                  <option value="NULL" class="text-danger">Unset</option>
                                 </select>
                             </div>
-                            <a class="btn btn-danger mr-2" onclick="send_href(this,'item-id<?php $query->get_result_e('id') ?>')" href="<?php echo get_directory() ?>/option.php?form=menu_item_delete&item_id=<?php $query->get_result_e('id') ?>" data-toggle="modal" data-target="#delete">Delete</a>
+                            <input type="hidden" name="item_id" value="<?php $child->get_result_e('id') ?>">
+                            <a class="btn btn-danger mr-2" onclick="send_href(this,'item-id<?php $child->get_result_e('id') ?>')" href="<?php echo get_directory() ?>/option.php?form=menu_item_delete&item_id=<?php $child->get_result_e('id') ?>" data-toggle="modal" data-target="#delete">Delete</a>
                             <input type="submit" name="submit" value="Save changes" class="btn btn-primary">
                           </form>
                         </div>
