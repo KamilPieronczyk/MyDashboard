@@ -28,7 +28,7 @@
 
       <div class="col-md-3">
         <div class="card card-block bg-faded text-center">
-          <h2><i class="fa fa-bar-chart" aria-hidden="true"></i>1235</h2>
+          <h2><i class="fa fa-bar-chart" aria-hidden="true"></i><?php echo get_visitors() ?></h2>
           <h4>Visitors</h4>
         </div>
       </div>

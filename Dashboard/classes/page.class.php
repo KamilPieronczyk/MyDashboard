@@ -43,7 +43,7 @@ class Page
   public function create_page($title, $content = '', $published = 1, $special = 0, $thumbnail = '')
   {
     if ($special == 1) {
-      $file = ($title == '') ? '' : $title;
+      $file = ($title == '') ? strtotime(date("Y-m-d H:i:s")) : $title;
       $file = preg_replace('~[\/:*?!"<>|,.`()]~', '', $file);
       $file = str_replace(' ','-',$file);
       $file .= '.php';
@@ -128,7 +128,23 @@ class Page
 
   public function edit_page($id, $title, $content = '', $published = 1, $special = 0)
   {
-    $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special' WHERE id = '$id'";
+    if ($this->special == 0 && $special = 1) {
+      $file = ($title == '') ? $this->page_id : $title;
+      $file = preg_replace('~[\/:*?!"<>|,.`()]~', '', $file);
+      $file = str_replace(' ','-',$file);
+      $file .= '.php';
+      $pagefile = fopen('../'.WEB_PATH.'/'.$file, "w+");
+      $theme = fopen('page-theme.php','r');
+      fwrite($pagefile,fread($theme,filesize('page-theme.php')));
+      fclose($pagefile);
+      fclose($theme);
+      $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special', file = '$file' WHERE id = '$id'";
+    } elseif ($this->special == $special) {
+      $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special' WHERE id = '$id'";
+    } else{
+      unlink('../'.WEB_PATH.'/'.$this->file);
+      $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special', file = NULL WHERE id = '$id'";
+    }
     if (conn()->query($sql) === TRUE) {
       set_alert(array(
         'type' => 'success',

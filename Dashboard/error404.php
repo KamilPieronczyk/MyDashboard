@@ -3,7 +3,7 @@
 <?php get_template_part_replace('templates/dashboard','top',array(
   'main' => 'Error 404',
   'small' => '',
-  'icon' => 'fa-error'
+  'icon' => 'fa-exclamation-triangle'
 )); ?>
 <?php go_to_sign_in(); ?>
 

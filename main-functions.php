@@ -4,6 +4,7 @@
 */
 require_once 'config.php';
 require_once DASHBOARD_PATH.'/configuraction-files/mysql-connect.php';
+require_once DASHBOARD_PATH.'/configuraction-files/options-funcions.php';
 require_once DASHBOARD_PATH.'/actions.php';
 // variabel to connect with mysql = conn()
 session_start();
@@ -392,4 +393,37 @@ function get_error404_message()
     $message = '';
   }
   return $message;
+}
+
+function plus_visitors()
+{
+  if (!isset($_SESSION['latest_visit'])) {
+    $date = date('Y-m-d H:i:s');
+    $_SESSION['latest_visit'] = $date;
+    $visitors = get_option('visitors');
+    if (!$visitors) {
+      $visitors = 0;
+      add_option('visitors',++$visitors);
+      return;
+    }
+    save_option('visitors',++$visitors);
+    return;
+  }
+  $minutes = round(strtotime(date('Y-m-d H:i:s')) - strtotime($_SESSION['latest_visit'])) / (60);
+
+  if ($minutes > 30) {
+    $_SESSION['latest_visit'] = date('Y-m-d H:i:s');
+    $visitors = get_option('visitors');
+    if (!$visitors) {
+      $visitors = 0;
+      add_option('visitors',++$visitors);
+      return;
+    }
+    save_option('visitors',++$visitors);
+  }
+}
+
+function get_visitors()
+{
+  return get_option('visitors');
 }

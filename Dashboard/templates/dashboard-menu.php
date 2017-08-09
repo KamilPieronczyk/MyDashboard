@@ -18,4 +18,9 @@
     Users
     <span class="badge badge-default badge-pill"><?php echo get_num_users() ?></span>
   </a>
+  <a href="<?php echo get_directory() ?>/pages/menu.php" class="list-group-item list-group-item-action">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+    Menu
+    <span class="badge badge-default badge-pill">1</span>
+  </a>
 </div>

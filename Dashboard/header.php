@@ -36,6 +36,9 @@
             <li class="nav-item <?php is_active('user') ?>">
               <a class="nav-link" href="<?php echo get_directory() ?>/pages/users.php">Users</a>
             </li>
+            <li class="nav-item <?php is_active('menu') ?>">
+              <a class="nav-link" href="<?php echo get_directory() ?>/pages/menu.php">Menu</a>
+            </li>
           </ul>
 
           <ul class="navbar-nav">

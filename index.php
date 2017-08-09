@@ -1,5 +1,6 @@
 <?php
 require_once 'main-functions.php';
+plus_visitors();
 if (!isset($_GET['action'])) {
   include WEB_PATH.'/index.php';
 }

@@ -11,16 +11,16 @@ class Data
   public static function select($sql = '')
   {
     $result = conn()->query($sql);
+    if (!isset($result->num_rows)) {
+      self::$num_rows = 0;
+      return 0;
+    }
     self::$num_rows = $result->num_rows;
     if ($result->num_rows > 1) {
       while ($row = $result->fetch_assoc()) {
         self::$array[] = $row;
       }
-      return self::$array;
-    } elseif ($result->num_rows == 1) {
-      $row = $result->fetch_assoc();
-      self::$num_rows = 1;
-      return $row;
+      return 1;
     } else {
       self::$num_rows = 0;
       return 0;
