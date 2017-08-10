@@ -15,7 +15,7 @@ class alert
 
   function __construct($type = 'success', $alert_size = 'small')
   {
-    $this->div[0] = '<div class="alert alert-'. $type .'" role="alert">';
+    $this->div[0] = '<div class="alert alert-'. $type .' fade show" role="alert">';
     $this->div[1] = '</div>';
     $this->button = '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

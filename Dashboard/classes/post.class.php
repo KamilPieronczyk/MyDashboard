@@ -111,12 +111,12 @@ class Post
     $sql = "SELECT * FROM posts WHERE id = '$id'";
     if ($row = Data::select($sql)) {
       $this->post_id = $id;
-      $this->title = $row[0]['title'];
-      $this->content = $row[0]['content'];
-      $this->thumbnail = $row[0]['thumbnail'];
-      $this->published = $row[0]['published'];
-      $this->created = $row[0]['created'];
-      $this->updated = $row[0]['updated'];
+      $this->title = $row['title'];
+      $this->content = $row['content'];
+      $this->thumbnail = $row['thumbnail'];
+      $this->published = $row['published'];
+      $this->created = $row['created'];
+      $this->updated = $row['updated'];
     } else {
       set_alert(array(
         'type' => 'warning',

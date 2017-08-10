@@ -1,4 +1,4 @@
-<?php require '../main-functions.php'; ?>
+<?php require '../../main-functions.php'; ?>
 <?php get_header() ?>
 <?php get_template_part_replace('templates/dashboard','top',array(
   'main' => 'Pages',
@@ -50,6 +50,7 @@
                     <td><?php get_result('published') ? fa_icon('fa-check') : fa_icon('fa-times')?></td>
                     <td>
                       <a class="btn btn-secondary" href="<?php echo get_directory()?>/pages/page_edit.php?page_id=<?php get_result_e('id') ?>">Edit</a>
+                      <a class="btn btn-info" href="<?php echo get_main_directory()?>?action=page&page_id=<?php get_result_e('id') ?>" target="_blank">Preview</a>
                       <a class="btn btn-danger" href="<?php echo get_directory()?>/option.php?form=page_delete&page_id=<?php get_result_e('id') ?>" onclick="send_href(this)" data-toggle="modal" data-target="#delete">Delete</a>
                     </td>
                   </tr>

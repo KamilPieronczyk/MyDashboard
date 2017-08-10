@@ -43,13 +43,14 @@ class Page
   public function create_page($title, $content = '', $published = 1, $special = 0, $thumbnail = '')
   {
     if ($special == 1) {
-      $file = ($title == '') ? '' : $title;
+      $file = ($title == '') ? strtotime(date("Y-m-d H:i:s")) : $title;
       $file = preg_replace('~[\/:*?!"<>|,.`()]~', '', $file);
       $file = str_replace(' ','-',$file);
       $file .= '.php';
     } else {
       $file = '';
     }
+
     $sql = "INSERT INTO pages (id, title, content, published, thumbnail, special, file) VALUES (NULL, '$title', '$content', '$published', '{$thumbnail}', '$special', '$file')";
     if (conn()->query($sql) === TRUE) {
       set_alert(array(
@@ -57,6 +58,11 @@ class Page
         'title' => 'Success',
         'content' => "Page has been created successfull"
       ));
+      $pagefile = fopen('../'.WEB_PATH.'/'.$file, "w+");
+      $theme = fopen('page-theme.php','r');
+      fwrite($pagefile,fread($theme,filesize('page-theme.php')));
+      fclose($pagefile);
+      fclose($theme);
       $this->page_id = conn()->insert_id;
       $this->title = $title;
       $this->content = $content;
@@ -122,7 +128,23 @@ class Page
 
   public function edit_page($id, $title, $content = '', $published = 1, $special = 0)
   {
-    $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special' WHERE id = '$id'";
+    if ($this->special == 0 && $special = 1) {
+      $file = ($title == '') ? $this->page_id : $title;
+      $file = preg_replace('~[\/:*?!"<>|,.`()]~', '', $file);
+      $file = str_replace(' ','-',$file);
+      $file .= '.php';
+      $pagefile = fopen('../'.WEB_PATH.'/'.$file, "w+");
+      $theme = fopen('page-theme.php','r');
+      fwrite($pagefile,fread($theme,filesize('page-theme.php')));
+      fclose($pagefile);
+      fclose($theme);
+      $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special', file = '$file' WHERE id = '$id'";
+    } elseif ($this->special == $special) {
+      $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special' WHERE id = '$id'";
+    } else{
+      unlink('../'.WEB_PATH.'/'.$this->file);
+      $sql = "UPDATE pages SET title = '$title', content = '$content', published = '$published', special = '$special', file = NULL WHERE id = '$id'";
+    }
     if (conn()->query($sql) === TRUE) {
       set_alert(array(
         'type' => 'success',
@@ -183,19 +205,10 @@ class Page
     }
   }
 
-  public function get_thumbnail($value = '')
+  public function get_thumbnail()
   {
     if (isset($this->thumbnail) && $this->thumbnail != '') {
-      switch ($value) {
-        case 'src':
-          $thumbnail = 'data:image/png;base64,'.base64_encode($this->thumbnail);
-          break;
-
-        default:
-          $thumbnail = base64_encode($this->thumbnail);
-          break;
-      }
-      return $thumbnail;
+      return $thumbnail = 'data:image/png;base64,'.base64_encode($this->thumbnail);
     } else {
       return NULL;
     }
@@ -260,6 +273,9 @@ class Page
   {
     if ($id == '') {
       $id = $this->page_id;
+    }
+    if ($this->special) {
+      unlink('../'.WEB_PATH.'/'.$this->file);
     }
     $sql = "DELETE FROM pages WHERE id = '$id'";
     if (conn()->query($sql) === TRUE) {

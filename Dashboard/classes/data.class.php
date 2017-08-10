@@ -8,19 +8,26 @@ class Data
   public static $num_rows;
   function __construct() { }
 
-  public function select($sql = '')
+  public static function select($sql = '')
   {
     $result = conn()->query($sql);
+    if (!isset($result->num_rows)) {
+      self::$num_rows = 0;
+      return 0;
+    }
     self::$num_rows = $result->num_rows;
     if ($result->num_rows > 0) {
       while ($row = $result->fetch_assoc()) {
         self::$array[] = $row;
       }
-      return self::$array;
+      return 1;
+    } else {
+      self::$num_rows = 0;
+      return 0;
     }
   }
 
-  public function query($sql='')
+  public static function query($sql='')
   {
     if (conn()->query($sql) === TRUE) {
       return 1;

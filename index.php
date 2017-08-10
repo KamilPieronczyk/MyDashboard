@@ -1,37 +1,50 @@
-<?php require 'main-functions.php'; ?>
-<?php get_header() ?>
-<?php get_template_part_replace('templates/dashboard','top',array(
-  'main' => 'Dashboard',
-  'small' => 'Manage your website',
-  'icon' => 'fa-cog'
-)); ?>
-<?php go_to_sign_in(); ?>
+<?php
+require_once 'main-functions.php';
+plus_visitors();
+if (!isset($_GET['action'])) {
+  include WEB_PATH.'/index.php';
+}
+if (isset($_GET['action'])) {
+  switch ($_GET['action']) {
+    case 'page':
+      create_page();
+      break;
+    default:
+      (@include WEB_PATH.'/index.php') or die(error404('Index file does not exist'));
+      break;
+  }
+}
 
-<section id="breadcrumb">
-  <div class="container">
-    <?php get_alerts() ?>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item active">Home </li>
-    </ol>
-  </div>
-</section>
+function create_page()
+{
+  if (!isset($_GET['page_id'])) {
+    error404('Page id does not set');
+  }
+  $page = new Page;
+  if (!$page->get_page($_GET['page_id'])) {
+    error404('Page within id does not exist');
+  }
 
-<section id="main">
-  <div class="container">
-    <div class="row">
+  set_page($page);
+  if ($page->get_published()) {
+    if (!$page->get_special()) {
+      ob_start();
+      include WEB_PATH.'/pages.php';
+      $page_included = ob_get_clean();
+      if ($page_included == Null) {
+        error404('Pages theme does not exist');
+      }
+    } else {
+      ob_start();
+      include WEB_PATH.'/'.$page->get_file();
+      $page_included = ob_get_clean();
+      if ($page_included == Null) {
+        error404('Pages does not exist '.WEB_PATH.'/'.$page->get_file());
+      }
+    }
+  } else {
+    error404('Page does not exist');
+  }
 
-      <div class="col-md-3">
-        <?php get_template_part('templates/dashboard','menu') ?>
-      </div>
-
-      <div class="col-md-9">
-        <?php get_template_part('templates/dashboard','overview') ?>
-        <?php get_template_part('templates/dashboard','latestusers') ?>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<?php get_footer() ?>
+  echo $page_included;
+}

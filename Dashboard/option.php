@@ -1,5 +1,5 @@
 <?php
-require_once 'main-functions.php';
+require_once '../main-functions.php';
 
 if (!isset($_GET['form'])) {
   exit();
@@ -314,7 +314,7 @@ if ($frname == 'post_delete') {
   }
   if (!check_user_permission(50)){
     set_alert(array(
-      'type' => 'error',
+      'type' => 'danger',
       'title' => 'Ee',
       'content' => "You don't have permission to delete posts"
     ));
@@ -323,5 +323,99 @@ if ($frname == 'post_delete') {
   }
   $post->delete_post();
   header_location(get_directory().'/pages/posts.php');
+  exit;
+}
+
+if ($frname == 'menu_item_add') {
+  if ($_POST['type'] == 'page') {
+    $url = $_POST['page'];
+    if ($_POST['title'] == '') {
+      $page= new Page;
+      $page->get_page($_POST['page']);
+      $title = $page->get_title();
+    } else {
+      $title = $_POST['title'];
+    }
+  } else {
+    if ($_POST['title'] == '') {
+      set_alert(array(
+        'type' => 'danger',
+        'title' => 'Ee',
+        'content' => "Title mustn't be empty"
+      ));
+      header_location(get_directory().'/pages/menu.php');
+      exit;
+    } else {
+      $title = $_POST['title'];
+    }
+    $url = $_POST['url'];
+  }
+  Menu::add($title,$url,$_POST['parent'],$_POST['visibility'],$_POST['number'],$_POST['type']);
+  header_location(get_directory().'/pages/menu.php');
+  exit;
+}
+
+if ($frname == "menu_item_edit" ) {
+  if (!isset($_POST['url'])) {
+    $url = $_POST['page'];
+    if ($_POST['title'] == '') {
+      $page= new Page;
+      $page->get_page($_POST['page']);
+      $title = $page->get_title();
+    } else {
+      $title = $_POST['title'];
+    }
+  } else {
+    if ($_POST['title'] == '') {
+      set_alert(array(
+        'type' => 'danger',
+        'title' => 'Ee',
+        'content' => "Title mustn't be empty"
+      ));
+      header_location(get_directory().'/pages/menu.php');
+      exit;
+    } else {
+      $title = $_POST['title'];
+    }
+    $url = $_POST['url'];
+  }
+  if ($_POST['parent'] == 'NULL') {
+    $parent = '';
+  } else {
+    $parent = $_POST['parent'];
+  }
+  Menu::edit($_POST['item_id'], $_POST['title'], $url, $parent, $_POST['visibility'], $_POST['number']);
+  header_location(get_directory().'/pages/menu.php');
+  exit;
+}
+
+if ($frname == "menu_item_delete" ) {
+  Menu::delete($_GET['item_id']);
+  header_location(get_directory().'/pages/menu.php');
+  exit;
+}
+
+if ($frname == 'sign-up') {
+  if (!isset($_POST['login']) || $_POST['login'] == '') {
+    set_alert(array(
+      'type' => 'danger',
+      'title' => 'Error',
+      'content' => 'Problem with creating a new user, please try again'
+    ));
+    header_location(get_directory().'/sign_in.php');
+    exit;
+  }
+  if ($_POST['password'] != $_POST['password-repeat']) {
+    set_alert(array(
+      'type' => 'danger',
+      'title' => 'Error',
+      'content' => 'Password is incorect'
+    ));
+    header_location(get_directory().'/sign_in.php');
+    exit;
+  }
+  $newuser = new User;
+  $newuser->new_user($_POST['login'], $_POST['password'], $_POST['name'], $_POST['email']);
+  header_location(get_directory().'/sign_in.php');
   exit;
 }
