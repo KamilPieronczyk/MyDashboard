@@ -394,3 +394,28 @@ if ($frname == "menu_item_delete" ) {
   header_location(get_directory().'/pages/menu.php');
   exit;
 }
+
+if ($frname == 'sign-up') {
+  if (!isset($_POST['login']) || $_POST['login'] == '') {
+    set_alert(array(
+      'type' => 'danger',
+      'title' => 'Error',
+      'content' => 'Problem with creating a new user, please try again'
+    ));
+    header_location(get_directory().'/sign_in.php');
+    exit;
+  }
+  if ($_POST['password'] != $_POST['password-repeat']) {
+    set_alert(array(
+      'type' => 'danger',
+      'title' => 'Error',
+      'content' => 'Password is incorect'
+    ));
+    header_location(get_directory().'/sign_in.php');
+    exit;
+  }
+  $newuser = new User;
+  $newuser->new_user($_POST['login'], $_POST['password'], $_POST['name'], $_POST['email']);
+  header_location(get_directory().'/sign_in.php');
+  exit;
+}

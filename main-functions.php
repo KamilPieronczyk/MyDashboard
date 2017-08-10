@@ -30,6 +30,16 @@ function get_footer()
   (@include DASHBOARD_PATH.'/footer.php') or die('Cannot find a footer file');
 }
 
+function get_theme_header()
+{
+  (@include WEB_PATH.'/header.php') or die('Cannot find a header file');
+}
+
+function get_theme_footer()
+{
+  (@include WEB_PATH.'/footer.php') or die('Cannot find a footer file');
+}
+
 function get_stylesheet_directory($filename, $maindir = DASHBOARD_PATH)
 {
   $dir = strtolower(basename(__DIR__));
