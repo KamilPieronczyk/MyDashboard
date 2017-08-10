@@ -109,14 +109,14 @@ class Post
       return 0;
     }
     $sql = "SELECT * FROM posts WHERE id = '$id'";
-    if ($row = Data::select($sql)) {
+    if (Data::select($sql)) {
       $this->post_id = $id;
-      $this->title = $row['title'];
-      $this->content = $row['content'];
-      $this->thumbnail = $row['thumbnail'];
-      $this->published = $row['published'];
-      $this->created = $row['created'];
-      $this->updated = $row['updated'];
+      $this->title = Data::$array[0]['title'];
+      $this->content = Data::$array[0]['content'];
+      $this->thumbnail = Data::$array[0]['thumbnail'];
+      $this->published = Data::$array[0]['published'];
+      $this->created = Data::$array[0]['created'];
+      $this->updated = Data::$array[0]['updated'];
     } else {
       set_alert(array(
         'type' => 'warning',
