@@ -42,20 +42,12 @@ function get_theme_footer()
 
 function get_stylesheet_directory($filename, $maindir = DASHBOARD_PATH)
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value.'/'.$maindir.'/css/'.$filename;
-      break;
-    }
+  if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
+    $str = MAIN_DIRECTORY.'/'.$maindir.'/css/'.$filename;
+  } else {
+    $str = MAIN_DIRECTORY.$maindir.'/css/'.$filename;
   }
-  echo $url;
+  echo $str;
 }
 
 function go_home()
@@ -82,56 +74,27 @@ function header_location($value = '')
 
 function get_directory()
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value.'/'.DASHBOARD_PATH;
-      break;
-    }
+  if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
+    $str = MAIN_DIRECTORY.'/'.DASHBOARD_PATH;
+  } else {
+    $str =  MAIN_DIRECTORY.DASHBOARD_PATH;
   }
-  return $url;
+  return $str;
 }
 
 function get_theme_directory()
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value.'/'.WEB_PATH;
-      break;
-    }
+  if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
+    $str =  MAIN_DIRECTORY.'/'.WEB_PATH;
+  } else {
+    $str =  MAIN_DIRECTORY.WEB_PATH;
   }
-  return $url;
+  return $str;
 }
 
 function get_main_directory()
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value;
-      break;
-    }
-  }
-  return $url;
+  return MAIN_DIRECTORY;
 }
 
 function get_template_part($first,$second = '',$maindir = DASHBOARD_PATH)
