@@ -42,38 +42,38 @@ function get_theme_footer()
 
 function get_stylesheet_directory($filename, $maindir = DASHBOARD_PATH)
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value.'/'.$maindir.'/css/'.$filename;
-      break;
-    }
+  $dir = MAIN_DIRECTORY;
+  if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
+    $str = MAIN_DIRECTORY.'/'.$maindir.'/css/'.$filename;
+  } else {
+    $str = MAIN_DIRECTORY.$maindir.'/css/'.$filename;
   }
-  echo $url;
+  echo $str;
+}
+
+function get_server_url()
+{
+  $protocol = $_SERVER['SERVER_PROTOCOL'];
+  $protocol = explode('/',$protocol);
+  return strtolower($protocol[0]).'://'.$_SERVER['SERVER_NAME'].'/';
 }
 
 function go_home()
 {
   $adres = get_directory().'/index.php';
-  header("location: $adres");
+  header("location: ".get_server_url()."$adres");
 }
 
 function header_location($value = '')
 {
   if ($value != '') {
-    header("location: $value");
+    header("location: ".get_server_url()."$value");
     exit;
     return;
   } else {
     if (isset($_POST['href'])) {
       $href = $_POST['href'];
-      header("location: $href");
+      header("location: ".get_server_url()."$href");
       exit;
       return;
     }
@@ -82,56 +82,29 @@ function header_location($value = '')
 
 function get_directory()
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value.'/'.DASHBOARD_PATH;
-      break;
-    }
+  $dir = MAIN_DIRECTORY;
+  if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
+    $str = MAIN_DIRECTORY.'/'.DASHBOARD_PATH;
+  } else {
+    $str =  MAIN_DIRECTORY.DASHBOARD_PATH;
   }
-  return $url;
+  return $str;
 }
 
 function get_theme_directory()
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value.'/'.WEB_PATH;
-      break;
-    }
+  $dir = MAIN_DIRECTORY;
+  if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
+    $str =  MAIN_DIRECTORY.'/'.WEB_PATH;
+  } else {
+    $str =  MAIN_DIRECTORY.WEB_PATH;
   }
-  return $url;
+  return $str;
 }
 
 function get_main_directory()
 {
-  $dir = strtolower(basename(__DIR__));
-  $uri = $_SERVER['REQUEST_URI'];
-  $uri = explode('/',$uri);
-  $url = '';
-  foreach ($uri as $value) {
-    $value = strtolower($value);
-    if ($value != $dir) {
-      $url .= $value.'/';
-    } else {
-      $url .= $value;
-      break;
-    }
-  }
-  return $url;
+  return MAIN_DIRECTORY;
 }
 
 function get_template_part($first,$second = '',$maindir = DASHBOARD_PATH)
@@ -436,4 +409,9 @@ function plus_visitors()
 function get_visitors()
 {
   return get_option('visitors');
+}
+
+function checked($checked)
+{
+  echo (($checked) ? 'checked' : '');
 }

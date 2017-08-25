@@ -9,7 +9,7 @@ function create_options_table()
     PRIMARY KEY  (`id`)
   )";
     if(conn()->query($sql) === TRUE) return 1;
-    else return 0;  
+    else return 0;
 }
 create_options_table();
 
@@ -18,7 +18,11 @@ function add_option($option_name, $value, $form_id='')
   if ($form_id=='') {
     $sql = "SELECT * FROM options WHERE option_name = '$option_name'";
     $result = conn()->query($sql);
-    if(@$result->num_rows>0) return 0;
+    if(@$result->num_rows>1) return 0;
+    if(@$result->num_rows == 1) {
+      save_option($option_name,$value);
+      return 1;
+    }
   } elseif ($form_id!='') {
     $sql = "SELECT * FROM options WHERE option_name = '$option_name' AND form_id = '$form_id'";
     $result = conn()->query($sql);
