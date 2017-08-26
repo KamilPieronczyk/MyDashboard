@@ -14,114 +14,76 @@ spl_autoload_register(function ($class) {
 require_once DASHBOARD_PATH.'/configuraction-files/user-function.php';
 require_once DASHBOARD_PATH.'/configuraction-files/pages-functions.php';
 @include DASHBOARD_PATH.'/functions.php';
-
-
 /*
 * Functions
 */
-
 function get_header()
 {
   (@include DASHBOARD_PATH.'/header.php') or die('Cannot find a header file');
 }
-
 function get_footer()
 {
   (@include DASHBOARD_PATH.'/footer.php') or die('Cannot find a footer file');
 }
-
 function get_theme_header()
 {
   (@include WEB_PATH.'/header.php') or die('Cannot find a header file');
 }
-
 function get_theme_footer()
 {
   (@include WEB_PATH.'/footer.php') or die('Cannot find a footer file');
 }
-
 function get_stylesheet_directory($filename, $maindir = DASHBOARD_PATH)
 {
-<<<<<<< HEAD
-  $dir = MAIN_DIRECTORY;
-  if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
-=======
   if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
->>>>>>> origin/master
     $str = MAIN_DIRECTORY.'/'.$maindir.'/css/'.$filename;
   } else {
     $str = MAIN_DIRECTORY.$maindir.'/css/'.$filename;
   }
   echo $str;
-<<<<<<< HEAD
 }
-
-function get_server_url()
-{
-  $protocol = $_SERVER['SERVER_PROTOCOL'];
-  $protocol = explode('/',$protocol);
-  return strtolower($protocol[0]).'://'.$_SERVER['SERVER_NAME'].'/';
-=======
->>>>>>> origin/master
-}
-
 function go_home()
 {
   $adres = get_directory().'/index.php';
-  header("location: ".get_server_url()."$adres");
+  header("location: $adres");
 }
-
 function header_location($value = '')
 {
   if ($value != '') {
-    header("location: ".get_server_url()."$value");
+    header("location: $value");
     exit;
     return;
   } else {
     if (isset($_POST['href'])) {
       $href = $_POST['href'];
-      header("location: ".get_server_url()."$href");
+      header("location: $href");
       exit;
       return;
     }
   }
 }
-
 function get_directory()
 {
-<<<<<<< HEAD
-  $dir = MAIN_DIRECTORY;
-  if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
-=======
   if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
->>>>>>> origin/master
     $str = MAIN_DIRECTORY.'/'.DASHBOARD_PATH;
   } else {
     $str =  MAIN_DIRECTORY.DASHBOARD_PATH;
   }
   return $str;
 }
-
 function get_theme_directory()
 {
-<<<<<<< HEAD
-  $dir = MAIN_DIRECTORY;
-  if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
-=======
   if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
->>>>>>> origin/master
     $str =  MAIN_DIRECTORY.'/'.WEB_PATH;
   } else {
     $str =  MAIN_DIRECTORY.WEB_PATH;
   }
   return $str;
 }
-
 function get_main_directory()
 {
   return MAIN_DIRECTORY;
 }
-
 function get_template_part($first,$second = '',$maindir = DASHBOARD_PATH)
 {
   if ($second != '') {
@@ -130,7 +92,6 @@ function get_template_part($first,$second = '',$maindir = DASHBOARD_PATH)
     (@include $maindir.'/'.$first.'.php') or die('Cannot open a'. $first.'.php');
   }
 }
-
 function get_template_part_replace($first,$second = '',$replace = array(), $maindir = DASHBOARD_PATH)
 {
   if ($second != '') {
@@ -156,7 +117,6 @@ function get_template_part_replace($first,$second = '',$replace = array(), $main
   }
   return 1;
 }
-
 function get_template_part_replace_php($first,$second = '',$replace = array(),$maindir = DASHBOARD_PATH)
 {
   if ($second != '') {
@@ -177,7 +137,6 @@ function get_template_part_replace_php($first,$second = '',$replace = array(),$m
   }
   return 1;
 }
-
 function set_alert($attr = array())
 {
   $attr['type'] = (isset($attr['type'])) ? $attr['type'] : 'success';
@@ -187,7 +146,6 @@ function set_alert($attr = array())
   $attr['link'] = (isset($attr['link'])) ? $attr['link'] : '';
   $attr['content'] = (isset($attr['content'])) ? $attr['content'] : '';
   $attr['footer'] = (isset($attr['footer'])) ? $attr['footer'] : '';
-
   $alert = new alert($attr['type'], $attr['size']);
   $alert->set_title($attr['title']);
   $alert->set_content($attr['content']);
@@ -196,7 +154,6 @@ function set_alert($attr = array())
   $alert->build_alert();
   $alert = null;
 }
-
 function get_alerts()
 {
   if (!isset($_SESSION['alerts'])) {
@@ -207,7 +164,6 @@ function get_alerts()
     unset($_SESSION['alerts'][$key]);
   }
 }
-
 $have_results = 0;
 $row;
 $results;
@@ -244,7 +200,6 @@ function query_loop($sql)
     }
   }
 }
-
 function get_result_e($value)
 {
   global $row,$have_results;
@@ -267,7 +222,6 @@ function get_result_e($value)
     ));
   }
 }
-
 function get_result($value)
 {
   global $row,$have_results;
@@ -289,7 +243,6 @@ function get_result($value)
    ));
  }
 }
-
 function get_num_users()
 {
   $sql = "SELECT * FROM users";
@@ -299,7 +252,6 @@ function get_num_users()
     return 0;
   }
 }
-
 function get_num_pages()
 {
   $sql = "SELECT * FROM pages";
@@ -309,7 +261,6 @@ function get_num_pages()
     return 0;
   }
 }
-
 function get_num_posts()
 {
   $sql = "SELECT * FROM posts";
@@ -319,7 +270,6 @@ function get_num_posts()
     return 0;
   }
 }
-
 function is_active($file)
 {
   $active = pathinfo($_SERVER['REQUEST_URI']);
@@ -335,7 +285,6 @@ function is_active($file)
   echo '';
   return NULL;
 }
-
 function the_cut($string, $wordsreturned = THE_CUT_LIMIT)
 {
   $retval = $string;
@@ -353,19 +302,16 @@ function the_cut($string, $wordsreturned = THE_CUT_LIMIT)
   }
   return $retval;
 }
-
 function prepare_img($value)
 {
   $thumbnail = addslashes(file_get_contents($value));
   return $thumbnail;
 }
-
 function fa_icon($fa, $class = '', $id = '')
 {
   $id = ($id == '') ? '' : 'id="'. $id .'"';
   echo '<i class="fa '. $fa .' '. $class .'" '. $id .' aria-hidden="true"></i>';
 }
-
 function error404($message = '',$value = '')
 {
   if ($message != '') {
@@ -375,13 +321,11 @@ function error404($message = '',$value = '')
     case 'dashboard':
       header_location(get_main_directory().'/error404.php');
       break;
-
     default:
       header_location(get_main_directory().'/error404.php');
       break;
   }
 }
-
 function get_error404_message()
 {
   if (isset($_SESSION['error404_message'])) {
@@ -392,7 +336,6 @@ function get_error404_message()
   }
   return $message;
 }
-
 function plus_visitors()
 {
   if (!isset($_SESSION['latest_visit'])) {
@@ -408,7 +351,6 @@ function plus_visitors()
     return;
   }
   $minutes = round(strtotime(date('Y-m-d H:i:s')) - strtotime($_SESSION['latest_visit'])) / (60);
-
   if ($minutes > 30) {
     $_SESSION['latest_visit'] = date('Y-m-d H:i:s');
     $visitors = get_option('visitors');
@@ -420,13 +362,7 @@ function plus_visitors()
     save_option('visitors',++$visitors);
   }
 }
-
 function get_visitors()
 {
   return get_option('visitors');
-}
-
-function checked($checked)
-{
-  echo (($checked) ? 'checked' : '');
 }
