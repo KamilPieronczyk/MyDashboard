@@ -42,13 +42,18 @@ function get_theme_footer()
 
 function get_stylesheet_directory($filename, $maindir = DASHBOARD_PATH)
 {
+<<<<<<< HEAD
   $dir = MAIN_DIRECTORY;
   if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
+=======
+  if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
+>>>>>>> origin/master
     $str = MAIN_DIRECTORY.'/'.$maindir.'/css/'.$filename;
   } else {
     $str = MAIN_DIRECTORY.$maindir.'/css/'.$filename;
   }
   echo $str;
+<<<<<<< HEAD
 }
 
 function get_server_url()
@@ -56,6 +61,8 @@ function get_server_url()
   $protocol = $_SERVER['SERVER_PROTOCOL'];
   $protocol = explode('/',$protocol);
   return strtolower($protocol[0]).'://'.$_SERVER['SERVER_NAME'].'/';
+=======
+>>>>>>> origin/master
 }
 
 function go_home()
@@ -82,8 +89,12 @@ function header_location($value = '')
 
 function get_directory()
 {
+<<<<<<< HEAD
   $dir = MAIN_DIRECTORY;
   if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
+=======
+  if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
+>>>>>>> origin/master
     $str = MAIN_DIRECTORY.'/'.DASHBOARD_PATH;
   } else {
     $str =  MAIN_DIRECTORY.DASHBOARD_PATH;
@@ -93,8 +104,12 @@ function get_directory()
 
 function get_theme_directory()
 {
+<<<<<<< HEAD
   $dir = MAIN_DIRECTORY;
   if (MAIN_DIRECTORY != '' && $dir[strlen(MAIN_DIRECTORY)-1] != '/') {
+=======
+  if (MAIN_DIRECTORY != '' && MAIN_DIRECTORY[strlen(MAIN_DIRECTORY)-1] != '/') {
+>>>>>>> origin/master
     $str =  MAIN_DIRECTORY.'/'.WEB_PATH;
   } else {
     $str =  MAIN_DIRECTORY.WEB_PATH;
