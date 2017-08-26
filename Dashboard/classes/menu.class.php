@@ -206,15 +206,24 @@ class Menu
                 echo '</a>';
                   echo "<div class=dropdown-menu aria-labelledby=navbarDropdownMenuurl>";
                   $sql = "SELECT * FROM menu WHERE parent_id = '".get_result('id')."' AND visibility = 1 AND menu = '$menu' ORDER BY `number`";
-                  Data::select($sql);
-                  for ($i=0; $i < Data::$num_rows; $i++) {
-                    if (Data::$array[$i]['type'] == 'page') {
-                      $url = get_main_directory().'/?action=page&page_id='.Data::$array[$i]['url'];
+                //Data::select($sql);
+                  $url_query = new Query($sql);
+                  while ($url_query->query_loop()) {
+                    if ($url_query->get_result('type') == 'page') {
+                      $url = get_main_directory().'/?action=page&page_id='.$url_query->get_result('url');
                     } else {
-                      $url = Data::$array[$i]['url'];
+                      $url = $url_query->get_result('url');
                     }
-                    echo "<a class=dropdown-item href=". $url .">". Data::$array[$i]['title'] ."</a>";
+                    echo "<a class=dropdown-item href=". $url .">". $url_query->get_result('title') ."</a>";
                   }
+                  // for ($i=0; $i < Data::$num_rows; $i++) {
+                  //   if (Data::$array[$i]['type'] == 'page') {
+                  //     $url = get_main_directory().'/?action=page&page_id='.Data::$array[$i]['url'];
+                  //   } else {
+                  //     $url = Data::$array[$i]['url'];
+                  //   }
+                  //   echo "<a class=dropdown-item href=". $url .">". Data::$array[$i]['title'] ."</a>";
+                  // }
                   echo "</div>";
               echo "</li>";
             }

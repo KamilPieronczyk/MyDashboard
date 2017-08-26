@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteBase /github/mydashboard/
+RewriteRule ^/pages/([0-9]+)/$ index.php
