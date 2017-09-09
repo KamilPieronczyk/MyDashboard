@@ -7,7 +7,7 @@
 )); ?>
 <?php
   if (is_user_signed_in()) {
-    header('location: index.php');
+    go_home();
   }
 ?>
 <section id="sign-in">
@@ -21,7 +21,7 @@
             <h5>Sign in</h5>
           </div>
           <div class="card-body">
-            <form method="POST" action="option.php?form=sign_in">
+            <form method="POST" action="<?php echo get_directory() ?>/option.php?form=sign_in">
                 <fieldset>
                   <label for="login"><h5>Login</h5></label>
                   <input type="text" id="login" name="login" value="" class="form-control" required>
@@ -30,6 +30,7 @@
                   <label for="password"><h5>Password</h5></label>
                   <input type="password" id="password" name="password" value="" class="form-control" required>
                 </fieldset>
+                <input type="hidden" name="page" value="<?php if (isset($_GET['page'])) echo $_GET['page']?>">
                 <button type="submit" class="btn bg-main white w-75">Sign in</button>
             </form>
           </div>
@@ -82,6 +83,7 @@
                 </div>
               </div>
               <button type="submit" id="submit" value="Submit" class="btn bg-main white w-75">Sign up</button>
+              <input type="hidden" name="page" value="<?php if (isset($_GET['page'])) echo $_GET['page']?>">
             </form>
           </div>
         </div>
