@@ -128,7 +128,7 @@ class Page
 
   public function edit_page($id, $title, $content = '', $published = 1, $special = 0)
   {
-    if ($this->special == 0 && $special = 1) {
+    if ($this->special == 0 && $special == 1) {
       $file = ($title == '') ? $this->page_id : $title;
       $file = preg_replace('~[\/:*?!"<>|,.`()]~', '', $file);
       $file = str_replace(' ','-',$file);
