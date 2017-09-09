@@ -11,10 +11,15 @@ if ($frname == 'sign_in' ) {
   if (isset($_POST['login'])) {
     $user = new User;
     if ($user->sign_in($_POST['login'], $_POST['password'])) {
-      go_home();
+      if (isset($_POST['page']) && $_POST['page'] != '') {
+        $adres = '/page/'.$_POST['page'].'/';
+      } else {
+        $adres = get_directory().'/sign_in.php';
+      }
+      header("location: ".get_server_url()."$adres");
     } else {
       $adres = get_directory().'/sign_in.php';
-      header("location: $adres");
+      header("location: ".get_server_url()."$adres");
     }
   }
 }
@@ -416,6 +421,10 @@ if ($frname == 'sign-up') {
   }
   $newuser = new User;
   $newuser->new_user($_POST['login'], $_POST['password'], $_POST['name'], $_POST['email']);
-  header_location(get_directory().'/sign_in.php');
+  if (isset($_POST['page']) && $_POST['page'] != '') {
+    header_location(get_directory().'/sign_in.php?page='.$_POST['page']);
+  } else {
+    header_location(get_directory().'/sign_in.php');
+  }
   exit;
 }
